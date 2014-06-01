@@ -80,7 +80,8 @@ void benchmark()
 		total += bt;
 
 		if (!quiet)
-			printf("Elapsed time: %u usecs\n", bt);	
+			printf("Elapsed time: %u usecs\n", bt);
+		
 		n_sleep(sleep_time);
 	}
 	total /= iter;

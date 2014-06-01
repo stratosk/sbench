@@ -21,6 +21,7 @@
 
 #define NSEC		(1000000000)
 #define MSEC2NSEC	(1000000)
+#define USEC2NSEC	(1000)
 #define CAL_LOOP	(100000000)
 #define DEF_CNT		(10000000)
 #define DEF_ITER	(10)
@@ -96,7 +97,7 @@ void benchmark()
 
 void usage()
 {
-	errx(1, "%s: [-c counter][-i iterations][-s sleep time][-q]\n", progname);
+	errx(1, "%s: [-c counter][-i iterations][-s sleep time (usec)][-q]\n", progname);
 }
 
 void cmdline(int argc, char **argv)
@@ -114,7 +115,7 @@ void cmdline(int argc, char **argv)
 			iter = atoi(optarg);
 			break;
 		case 's':
-			sleep_time = atoi(optarg) * MSEC2NSEC;
+			sleep_time = atoi(optarg) * USEC2NSEC;
 			break;
 		case 'q':
 			quiet = 1;

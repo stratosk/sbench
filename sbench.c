@@ -29,6 +29,7 @@
 char *progname;
 unsigned long cnt, nsecs, iter, sleep_time;
 struct timespec ts_start, ts_end, ts_total_start, ts_total_end;
+int quiet = 0;
 
 unsigned long do_bench()
 {
@@ -69,15 +70,17 @@ void benchmark()
 	unsigned long total = 0;
 	unsigned long sec, msec, bt;
 
-	clock_gettime(CLOCK_MONOTONIC, &ts_total_start);	
+	clock_gettime(CLOCK_MONOTONIC, &ts_total_start);
 
 	for (i = 0; i < iter; i++) {
-		printf("Iteration %u, ", i);
+		if (!quiet)
+			printf("Iteration %u, ", i);
 
 		bt = do_bench();
 		total += bt;
 
-		printf("Elapsed time: %u usecs\n", bt);	
+		if (!quiet)
+			printf("Elapsed time: %u usecs\n", bt);	
 		n_sleep(sleep_time);
 	}
 	total /= iter;
@@ -92,7 +95,7 @@ void benchmark()
 
 void usage()
 {
-	errx(1, "%s: [-c counter][-i iterations][-s sleep time]\n", progname);
+	errx(1, "%s: [-c counter][-i iterations][-s sleep time][-q]\n", progname);
 }
 
 void cmdline(int argc, char **argv)
@@ -101,7 +104,7 @@ void cmdline(int argc, char **argv)
 
 	progname = argv[0];
 
-	while ((opt = getopt(argc, argv, "c:i:s:")) != -1) {
+	while ((opt = getopt(argc, argv, "c:i:s:q")) != -1) {
 		switch (opt) {
 		case 'c':
 			cnt = atoi(optarg);
@@ -112,7 +115,10 @@ void cmdline(int argc, char **argv)
 		case 's':
 			sleep_time = atoi(optarg) * MSEC2NSEC;
 			break;
-		default:	
+		case 'q':
+			quiet = 1;
+			break;
+		default:
 			usage();
 		}
 	}

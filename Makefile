@@ -2,10 +2,10 @@ CC=gcc
 
 all: sbench calibrate
 
-sbench:
+sbench: sbench.c
 	$(CC) sbench.c -o sbench
 
-calibrate:
+calibrate: calibrate.c
 	$(CC) calibrate.c -o calibrate
 
 clean:
